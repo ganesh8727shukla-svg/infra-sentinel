@@ -48,7 +48,7 @@ export interface Complaint {
   id: string;
   assetId: string;
   citizenId: string;
-  imageUrl?: string;
+  imageUrl?: string | undefined;
   latitude: number;
   longitude: number;
   issueType: IssueType;
@@ -58,13 +58,13 @@ export interface Complaint {
   status: ComplaintStatus;
   submittedBy: string;
   createdAt: string;
-  workOrderId?: string;
+  workOrderId?: string | undefined;
 }
 
 export interface AiDetection {
   id: string;
   assetId: string;
-  imageUrl?: string;
+  imageUrl?: string | undefined;
   detectionType: string;
   confidence: number;
   severity: RiskLevel;
@@ -92,7 +92,7 @@ export type Priority = "Critical" | "High" | "Normal";
 export interface WorkOrder {
   id: string;
   assetId: string;
-  complaintId?: string;
+  complaintId?: string | undefined;
   contractorId: string;
   issue: string;
   requiredAction: string;
@@ -101,11 +101,11 @@ export interface WorkOrder {
   riskScore: number;
   createdAt: string;
   deadline: string;
-  beforeImage?: string;
-  afterImage?: string;
-  notes?: string;
+  beforeImage?: string | undefined;
+  afterImage?: string | undefined;
+  notes?: string | undefined;
   verificationStatus: "Not started" | "Analysing" | "Verified" | "Rejected";
-  verificationConfidence?: number;
+  verificationConfidence?: number | undefined;
 }
 
 export interface Contractor {
@@ -133,8 +133,8 @@ export interface AuditLog {
   metadata?: {
     inputs?: { label: string; value: string }[];
     outputs?: { label: string; value: string }[];
-    policy?: string;
-    action?: string;
+    policy?: string | undefined;
+    action?: string | undefined;
   };
 }
 
@@ -163,7 +163,7 @@ export interface Alert {
   recommendedAction: string;
   createdAt: string;
   resolved: boolean;
-  workOrderId?: string;
+  workOrderId?: string | undefined;
 }
 
 export interface MaintenanceEntry {
