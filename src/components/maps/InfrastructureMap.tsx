@@ -82,7 +82,7 @@ export default function InfrastructureMap({
                 }}
               >
                 <Tooltip direction="top">
-                  {c.district}: {c.count} assets
+                  {c.key}: {c.count} assets
                 </Tooltip>
               </CircleMarker>
             ))
