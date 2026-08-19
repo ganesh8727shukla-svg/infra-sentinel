@@ -1,0 +1,51 @@
+import { API_BASE_URL, USE_MOCK_DATA } from "@/config";
+
+export class ApiError extends Error {
+  status: number;
+  constructor(message: string, status = 0) {
+    super(message);
+    this.status = status;
+  }
+}
+
+const TOKEN_KEY = "infrasetu.token";
+
+export function getToken() {
+  if (typeof window === "undefined") return null;
+  return window.localStorage.getItem(TOKEN_KEY);
+}
+
+export function setToken(token: string | null) {
+  if (typeof window === "undefined") return;
+  if (token) window.localStorage.setItem(TOKEN_KEY, token);
+  else window.localStorage.removeItem(TOKEN_KEY);
+}
+
+/** Thin fetch wrapper used by every module in src/api. */
+export async function request<T>(
+  path: string,
+  init: RequestInit & { json?: unknown } = {},
+): Promise<T> {
+  const { json, ...rest } = init;
+  const token = getToken();
+  const res = await fetch(`${API_BASE_URL}${path}`, {
+    ...rest,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(rest.headers ?? {}),
+    },
+    ...(json !== undefined ? { body: JSON.stringify(json) } : {}),
+  });
+  if (!res.ok) {
+    throw new ApiError("Unable to reach the InfraSetu service.", res.status);
+  }
+  return (await res.json()) as T;
+}
+
+/** Resolves mock data after a short, realistic delay. */
+export function mockResponse<T>(value: T, delay = 320): Promise<T> {
+  return new Promise((resolve) => setTimeout(() => resolve(value), delay));
+}
+
+export const isMock = () => USE_MOCK_DATA;
