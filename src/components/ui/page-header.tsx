@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
+import type { LinkProps } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 
 export interface Crumb {
   label: string;
-  to?: string;
+  to?: LinkProps["to"];
 }
 
 export function PageHeader({

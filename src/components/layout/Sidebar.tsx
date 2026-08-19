@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import type { LinkProps } from "@tanstack/react-router";
 import {
   Activity,
   BarChart3,
@@ -20,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 
 interface NavItem {
   label: string;
-  to: string;
+  to: LinkProps["to"];
   icon: LucideIcon;
 }
 
