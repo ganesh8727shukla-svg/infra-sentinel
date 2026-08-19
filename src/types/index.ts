@@ -131,11 +131,11 @@ export interface AuditLog {
   description: string;
   systemDecision: string;
   metadata?: {
-    inputs?: { label: string; value: string }[];
-    outputs?: { label: string; value: string }[];
+    inputs?: { label: string; value: string }[] | undefined;
+    outputs?: { label: string; value: string }[] | undefined;
     policy?: string | undefined;
     action?: string | undefined;
-  };
+  } | undefined;
 }
 
 export interface SatelliteObservation {
