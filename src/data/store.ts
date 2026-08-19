@@ -236,7 +236,11 @@ export function startWork(workOrderId: string) {
 
 export function submitRepairEvidence(
   workOrderId: string,
-  payload: { beforeImage?: string; afterImage?: string; notes?: string },
+  payload: {
+    beforeImage?: string | undefined;
+    afterImage?: string | undefined;
+    notes?: string | undefined;
+  },
 ) {
   state.workOrders = state.workOrders.map((w) =>
     w.id === workOrderId
