@@ -61,7 +61,7 @@ export function createComplaint(input: {
   description: string;
   latitude: number;
   longitude: number;
-  imageUrl?: string;
+  imageUrl?: string | undefined;
 }): Complaint {
   const id = `CIT-${10290 + state.complaints.length + 1}`;
   const complaint: Complaint = {
