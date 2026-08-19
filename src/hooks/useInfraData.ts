@@ -13,7 +13,12 @@ import { store } from "@/data/store";
 /** Keeps react-query in sync with mock-mode store mutations. */
 export function useMockStoreSync() {
   const qc = useQueryClient();
-  useEffect(() => store.subscribe(() => void qc.invalidateQueries()), [qc]);
+  useEffect(() => {
+    const unsubscribe = store.subscribe(() => void qc.invalidateQueries());
+    return () => {
+      unsubscribe();
+    };
+  }, [qc]);
 }
 
 export const useAssets = () =>
