@@ -19,6 +19,7 @@ import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminMapRouteImport } from './routes/admin.map'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
 import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$assetId'
+import { Route as AdminComplaintsIndexRouteImport } from './routes/admin.complaints.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,6 +71,11 @@ const AdminAssetsAssetIdRoute = AdminAssetsAssetIdRouteImport.update({
   path: '/assets/$assetId',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminComplaintsIndexRoute = AdminComplaintsIndexRouteImport.update({
+  id: '/complaints/',
+  path: '/complaints/',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
+  '/admin/complaints/': typeof AdminComplaintsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
+  '/admin/complaints': typeof AdminComplaintsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
+  '/admin/complaints/': typeof AdminComplaintsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/assets/$assetId'
     | '/admin/assets/'
+    | '/admin/complaints/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/assets/$assetId'
     | '/admin/assets'
+    | '/admin/complaints'
   id:
     | '__root__'
     | '/'
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/assets/$assetId'
     | '/admin/assets/'
+    | '/admin/complaints/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -224,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAssetsAssetIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/complaints/': {
+      id: '/admin/complaints/'
+      path: '/complaints'
+      fullPath: '/admin/complaints/'
+      preLoaderRoute: typeof AdminComplaintsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -234,6 +253,7 @@ interface AdminRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAssetsAssetIdRoute: typeof AdminAssetsAssetIdRoute
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
+  AdminComplaintsIndexRoute: typeof AdminComplaintsIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -243,6 +263,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminAssetsAssetIdRoute: AdminAssetsAssetIdRoute,
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
+  AdminComplaintsIndexRoute: AdminComplaintsIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
