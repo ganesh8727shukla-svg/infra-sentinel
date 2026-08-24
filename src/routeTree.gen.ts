@@ -14,7 +14,12 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as LandingRouteImport } from './routes/landing'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminAlertsRouteImport } from './routes/admin.alerts'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminMapRouteImport } from './routes/admin.map'
+import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
+import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$assetId'
+import { Route as AdminComplaintsIndexRouteImport } from './routes/admin.complaints.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -41,9 +46,34 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAlertsRoute = AdminAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMapRoute = AdminMapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
+  id: '/assets/',
+  path: '/assets/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAssetsAssetIdRoute = AdminAssetsAssetIdRouteImport.update({
+  id: '/assets/$assetId',
+  path: '/assets/$assetId',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminComplaintsIndexRoute = AdminComplaintsIndexRouteImport.update({
+  id: '/complaints/',
+  path: '/complaints/',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -52,15 +82,25 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
+  '/admin/alerts': typeof AdminAlertsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/map': typeof AdminMapRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
+  '/admin/assets/': typeof AdminAssetsIndexRoute
+  '/admin/complaints/': typeof AdminComplaintsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
+  '/admin/alerts': typeof AdminAlertsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/map': typeof AdminMapRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
+  '/admin/assets': typeof AdminAssetsIndexRoute
+  '/admin/complaints': typeof AdminComplaintsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,23 +108,53 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
+  '/admin/alerts': typeof AdminAlertsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/map': typeof AdminMapRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
+  '/admin/assets/': typeof AdminAssetsIndexRoute
+  '/admin/complaints/': typeof AdminComplaintsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/admin' | '/landing' | '/login' | '/admin/dashboard' | '/admin/'
+    | '/'
+    | '/admin'
+    | '/landing'
+    | '/login'
+    | '/admin/alerts'
+    | '/admin/dashboard'
+    | '/admin/map'
+    | '/admin/'
+    | '/admin/assets/$assetId'
+    | '/admin/assets/'
+    | '/admin/complaints/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/landing' | '/login' | '/admin/dashboard' | '/admin'
+  to:
+    | '/'
+    | '/landing'
+    | '/login'
+    | '/admin/alerts'
+    | '/admin/dashboard'
+    | '/admin/map'
+    | '/admin'
+    | '/admin/assets/$assetId'
+    | '/admin/assets'
+    | '/admin/complaints'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/landing'
     | '/login'
+    | '/admin/alerts'
     | '/admin/dashboard'
+    | '/admin/map'
     | '/admin/'
+    | '/admin/assets/$assetId'
+    | '/admin/assets/'
+    | '/admin/complaints/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -131,6 +201,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/alerts': {
+      id: '/admin/alerts'
+      path: '/alerts'
+      fullPath: '/admin/alerts'
+      preLoaderRoute: typeof AdminAlertsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/dashboard': {
       id: '/admin/dashboard'
       path: '/dashboard'
@@ -138,17 +215,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/map': {
+      id: '/admin/map'
+      path: '/map'
+      fullPath: '/admin/map'
+      preLoaderRoute: typeof AdminMapRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/assets/': {
+      id: '/admin/assets/'
+      path: '/assets'
+      fullPath: '/admin/assets/'
+      preLoaderRoute: typeof AdminAssetsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/assets/$assetId': {
+      id: '/admin/assets/$assetId'
+      path: '/assets/$assetId'
+      fullPath: '/admin/assets/$assetId'
+      preLoaderRoute: typeof AdminAssetsAssetIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/complaints/': {
+      id: '/admin/complaints/'
+      path: '/complaints'
+      fullPath: '/admin/complaints/'
+      preLoaderRoute: typeof AdminComplaintsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminAlertsRoute: typeof AdminAlertsRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminMapRoute: typeof AdminMapRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminAssetsAssetIdRoute: typeof AdminAssetsAssetIdRoute
+  AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
+  AdminComplaintsIndexRoute: typeof AdminComplaintsIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAlertsRoute: AdminAlertsRoute,
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminMapRoute: AdminMapRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminAssetsAssetIdRoute: AdminAssetsAssetIdRoute,
+  AdminAssetsIndexRoute: AdminAssetsIndexRoute,
+  AdminComplaintsIndexRoute: AdminComplaintsIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
