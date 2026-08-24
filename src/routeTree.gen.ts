@@ -15,6 +15,7 @@ import { Route as LandingRouteImport } from './routes/landing'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminMapRouteImport } from './routes/admin.map'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
 import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$assetId'
 
@@ -48,6 +49,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminMapRoute = AdminMapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
   id: '/assets/',
   path: '/assets/',
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/map': typeof AdminMapRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/map': typeof AdminMapRoute
   '/admin': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/map': typeof AdminMapRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/admin/dashboard'
+    | '/admin/map'
     | '/admin/'
     | '/admin/assets/$assetId'
     | '/admin/assets/'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/admin/dashboard'
+    | '/admin/map'
     | '/admin'
     | '/admin/assets/$assetId'
     | '/admin/assets'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/admin/dashboard'
+    | '/admin/map'
     | '/admin/'
     | '/admin/assets/$assetId'
     | '/admin/assets/'
@@ -172,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/map': {
+      id: '/admin/map'
+      path: '/map'
+      fullPath: '/admin/map'
+      preLoaderRoute: typeof AdminMapRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/assets/': {
       id: '/admin/assets/'
       path: '/assets'
@@ -191,6 +210,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminMapRoute: typeof AdminMapRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAssetsAssetIdRoute: typeof AdminAssetsAssetIdRoute
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
@@ -198,6 +218,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminMapRoute: AdminMapRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminAssetsAssetIdRoute: AdminAssetsAssetIdRoute,
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
