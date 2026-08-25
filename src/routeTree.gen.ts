@@ -20,6 +20,7 @@ import { Route as AdminMapRouteImport } from './routes/admin.map'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
 import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$assetId'
 import { Route as AdminComplaintsIndexRouteImport } from './routes/admin.complaints.index'
+import { Route as AdminComplaintsComplaintIdRouteImport } from './routes/admin.complaints.$complaintId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +77,12 @@ const AdminComplaintsIndexRoute = AdminComplaintsIndexRouteImport.update({
   path: '/complaints/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminComplaintsComplaintIdRoute =
+  AdminComplaintsComplaintIdRouteImport.update({
+    id: '/complaints/$complaintId',
+    path: '/complaints/$complaintId',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/admin/map': typeof AdminMapRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
+  '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/complaints/': typeof AdminComplaintsIndexRoute
 }
@@ -99,6 +107,7 @@ export interface FileRoutesByTo {
   '/admin/map': typeof AdminMapRoute
   '/admin': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
+  '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
   '/admin/complaints': typeof AdminComplaintsIndexRoute
 }
@@ -113,6 +122,7 @@ export interface FileRoutesById {
   '/admin/map': typeof AdminMapRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
+  '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/complaints/': typeof AdminComplaintsIndexRoute
 }
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/admin/map'
     | '/admin/'
     | '/admin/assets/$assetId'
+    | '/admin/complaints/$complaintId'
     | '/admin/assets/'
     | '/admin/complaints/'
   fileRoutesByTo: FileRoutesByTo
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/admin/map'
     | '/admin'
     | '/admin/assets/$assetId'
+    | '/admin/complaints/$complaintId'
     | '/admin/assets'
     | '/admin/complaints'
   id:
@@ -153,6 +165,7 @@ export interface FileRouteTypes {
     | '/admin/map'
     | '/admin/'
     | '/admin/assets/$assetId'
+    | '/admin/complaints/$complaintId'
     | '/admin/assets/'
     | '/admin/complaints/'
   fileRoutesById: FileRoutesById
@@ -243,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminComplaintsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/complaints/$complaintId': {
+      id: '/admin/complaints/$complaintId'
+      path: '/complaints/$complaintId'
+      fullPath: '/admin/complaints/$complaintId'
+      preLoaderRoute: typeof AdminComplaintsComplaintIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -252,6 +272,7 @@ interface AdminRouteChildren {
   AdminMapRoute: typeof AdminMapRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAssetsAssetIdRoute: typeof AdminAssetsAssetIdRoute
+  AdminComplaintsComplaintIdRoute: typeof AdminComplaintsComplaintIdRoute
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
   AdminComplaintsIndexRoute: typeof AdminComplaintsIndexRoute
 }
@@ -262,6 +283,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminMapRoute: AdminMapRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminAssetsAssetIdRoute: AdminAssetsAssetIdRoute,
+  AdminComplaintsComplaintIdRoute: AdminComplaintsComplaintIdRoute,
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
   AdminComplaintsIndexRoute: AdminComplaintsIndexRoute,
 }
