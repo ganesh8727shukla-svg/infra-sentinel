@@ -22,6 +22,7 @@ import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$a
 import { Route as AdminComplaintsIndexRouteImport } from './routes/admin.complaints.index'
 import { Route as AdminComplaintsComplaintIdRouteImport } from './routes/admin.complaints.$complaintId'
 import { Route as AdminWorkOrdersIndexRouteImport } from './routes/admin.work-orders.index'
+import { Route as AdminWorkOrdersWorkOrderIdRouteImport } from './routes/admin.work-orders.$workOrderId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -89,6 +90,12 @@ const AdminWorkOrdersIndexRoute = AdminWorkOrdersIndexRouteImport.update({
   path: '/work-orders/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminWorkOrdersWorkOrderIdRoute =
+  AdminWorkOrdersWorkOrderIdRouteImport.update({
+    id: '/work-orders/$workOrderId',
+    path: '/work-orders/$workOrderId',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
+  '/admin/work-orders/$workOrderId': typeof AdminWorkOrdersWorkOrderIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/complaints/': typeof AdminComplaintsIndexRoute
   '/admin/work-orders/': typeof AdminWorkOrdersIndexRoute
@@ -115,6 +123,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
+  '/admin/work-orders/$workOrderId': typeof AdminWorkOrdersWorkOrderIdRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
   '/admin/complaints': typeof AdminComplaintsIndexRoute
   '/admin/work-orders': typeof AdminWorkOrdersIndexRoute
@@ -131,6 +140,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
+  '/admin/work-orders/$workOrderId': typeof AdminWorkOrdersWorkOrderIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/complaints/': typeof AdminComplaintsIndexRoute
   '/admin/work-orders/': typeof AdminWorkOrdersIndexRoute
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/assets/$assetId'
     | '/admin/complaints/$complaintId'
+    | '/admin/work-orders/$workOrderId'
     | '/admin/assets/'
     | '/admin/complaints/'
     | '/admin/work-orders/'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/assets/$assetId'
     | '/admin/complaints/$complaintId'
+    | '/admin/work-orders/$workOrderId'
     | '/admin/assets'
     | '/admin/complaints'
     | '/admin/work-orders'
@@ -177,6 +189,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/assets/$assetId'
     | '/admin/complaints/$complaintId'
+    | '/admin/work-orders/$workOrderId'
     | '/admin/assets/'
     | '/admin/complaints/'
     | '/admin/work-orders/'
@@ -282,6 +295,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminWorkOrdersIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/work-orders/$workOrderId': {
+      id: '/admin/work-orders/$workOrderId'
+      path: '/work-orders/$workOrderId'
+      fullPath: '/admin/work-orders/$workOrderId'
+      preLoaderRoute: typeof AdminWorkOrdersWorkOrderIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -292,6 +312,7 @@ interface AdminRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAssetsAssetIdRoute: typeof AdminAssetsAssetIdRoute
   AdminComplaintsComplaintIdRoute: typeof AdminComplaintsComplaintIdRoute
+  AdminWorkOrdersWorkOrderIdRoute: typeof AdminWorkOrdersWorkOrderIdRoute
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
   AdminComplaintsIndexRoute: typeof AdminComplaintsIndexRoute
   AdminWorkOrdersIndexRoute: typeof AdminWorkOrdersIndexRoute
@@ -304,6 +325,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminAssetsAssetIdRoute: AdminAssetsAssetIdRoute,
   AdminComplaintsComplaintIdRoute: AdminComplaintsComplaintIdRoute,
+  AdminWorkOrdersWorkOrderIdRoute: AdminWorkOrdersWorkOrderIdRoute,
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
   AdminComplaintsIndexRoute: AdminComplaintsIndexRoute,
   AdminWorkOrdersIndexRoute: AdminWorkOrdersIndexRoute,
