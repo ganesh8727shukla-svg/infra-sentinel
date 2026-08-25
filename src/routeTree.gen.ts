@@ -15,6 +15,7 @@ import { Route as LandingRouteImport } from './routes/landing'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminAlertsRouteImport } from './routes/admin.alerts'
+import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminMapRouteImport } from './routes/admin.map'
 import { Route as AdminSatelliteRouteImport } from './routes/admin.satellite'
@@ -55,6 +56,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const AdminAlertsRoute = AdminAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/alerts': typeof AdminAlertsRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
@@ -140,6 +147,7 @@ export interface FileRoutesByTo {
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/alerts': typeof AdminAlertsRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/alerts': typeof AdminAlertsRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/admin/alerts'
+    | '/admin/analytics'
     | '/admin/dashboard'
     | '/admin/map'
     | '/admin/satellite'
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/admin/alerts'
+    | '/admin/analytics'
     | '/admin/dashboard'
     | '/admin/map'
     | '/admin/satellite'
@@ -218,6 +229,7 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/admin/alerts'
+    | '/admin/analytics'
     | '/admin/dashboard'
     | '/admin/map'
     | '/admin/satellite'
@@ -281,6 +293,13 @@ declare module '@tanstack/react-router' {
       path: '/alerts'
       fullPath: '/admin/alerts'
       preLoaderRoute: typeof AdminAlertsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/analytics': {
+      id: '/admin/analytics'
+      path: '/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/dashboard': {
@@ -365,6 +384,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAlertsRoute: typeof AdminAlertsRoute
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminMapRoute: typeof AdminMapRoute
   AdminSatelliteRoute: typeof AdminSatelliteRoute
@@ -381,6 +401,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAlertsRoute: AdminAlertsRoute,
+  AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminMapRoute: AdminMapRoute,
   AdminSatelliteRoute: AdminSatelliteRoute,
