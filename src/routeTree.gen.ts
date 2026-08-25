@@ -17,6 +17,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminAlertsRouteImport } from './routes/admin.alerts'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminMapRouteImport } from './routes/admin.map'
+import { Route as AdminSatelliteRouteImport } from './routes/admin.satellite'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
 import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$assetId'
 import { Route as AdminComplaintsIndexRouteImport } from './routes/admin.complaints.index'
@@ -64,6 +65,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
 const AdminMapRoute = AdminMapRouteImport.update({
   id: '/map',
   path: '/map',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSatelliteRoute = AdminSatelliteRouteImport.update({
+  id: '/satellite',
+  path: '/satellite',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/admin/alerts': typeof AdminAlertsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
+  '/admin/satellite': typeof AdminSatelliteRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/admin/alerts': typeof AdminAlertsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
+  '/admin/satellite': typeof AdminSatelliteRoute
   '/admin': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
@@ -154,6 +162,7 @@ export interface FileRoutesById {
   '/admin/alerts': typeof AdminAlertsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
+  '/admin/satellite': typeof AdminSatelliteRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/admin/alerts'
     | '/admin/dashboard'
     | '/admin/map'
+    | '/admin/satellite'
     | '/admin/'
     | '/admin/assets/$assetId'
     | '/admin/complaints/$complaintId'
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
     | '/admin/alerts'
     | '/admin/dashboard'
     | '/admin/map'
+    | '/admin/satellite'
     | '/admin'
     | '/admin/assets/$assetId'
     | '/admin/complaints/$complaintId'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/admin/alerts'
     | '/admin/dashboard'
     | '/admin/map'
+    | '/admin/satellite'
     | '/admin/'
     | '/admin/assets/$assetId'
     | '/admin/complaints/$complaintId'
@@ -285,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMapRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/satellite': {
+      id: '/admin/satellite'
+      path: '/satellite'
+      fullPath: '/admin/satellite'
+      preLoaderRoute: typeof AdminSatelliteRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/assets/': {
       id: '/admin/assets/'
       path: '/assets'
@@ -348,6 +367,7 @@ interface AdminRouteChildren {
   AdminAlertsRoute: typeof AdminAlertsRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminMapRoute: typeof AdminMapRoute
+  AdminSatelliteRoute: typeof AdminSatelliteRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAssetsAssetIdRoute: typeof AdminAssetsAssetIdRoute
   AdminComplaintsComplaintIdRoute: typeof AdminComplaintsComplaintIdRoute
@@ -363,6 +383,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAlertsRoute: AdminAlertsRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminMapRoute: AdminMapRoute,
+  AdminSatelliteRoute: AdminSatelliteRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminAssetsAssetIdRoute: AdminAssetsAssetIdRoute,
   AdminComplaintsComplaintIdRoute: AdminComplaintsComplaintIdRoute,
