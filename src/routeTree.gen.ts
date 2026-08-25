@@ -15,11 +15,18 @@ import { Route as LandingRouteImport } from './routes/landing'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminAlertsRouteImport } from './routes/admin.alerts'
+import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminMapRouteImport } from './routes/admin.map'
+import { Route as AdminSatelliteRouteImport } from './routes/admin.satellite'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
 import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$assetId'
 import { Route as AdminComplaintsIndexRouteImport } from './routes/admin.complaints.index'
+import { Route as AdminComplaintsComplaintIdRouteImport } from './routes/admin.complaints.$complaintId'
+import { Route as AdminContractorsIndexRouteImport } from './routes/admin.contractors.index'
+import { Route as AdminContractorsContractorIdRouteImport } from './routes/admin.contractors.$contractorId'
+import { Route as AdminWorkOrdersIndexRouteImport } from './routes/admin.work-orders.index'
+import { Route as AdminWorkOrdersWorkOrderIdRouteImport } from './routes/admin.work-orders.$workOrderId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -51,6 +58,11 @@ const AdminAlertsRoute = AdminAlertsRouteImport.update({
   path: '/alerts',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -59,6 +71,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
 const AdminMapRoute = AdminMapRouteImport.update({
   id: '/map',
   path: '/map',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSatelliteRoute = AdminSatelliteRouteImport.update({
+  id: '/satellite',
+  path: '/satellite',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
@@ -76,6 +93,34 @@ const AdminComplaintsIndexRoute = AdminComplaintsIndexRouteImport.update({
   path: '/complaints/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminComplaintsComplaintIdRoute =
+  AdminComplaintsComplaintIdRouteImport.update({
+    id: '/complaints/$complaintId',
+    path: '/complaints/$complaintId',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminContractorsIndexRoute = AdminContractorsIndexRouteImport.update({
+  id: '/contractors/',
+  path: '/contractors/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminContractorsContractorIdRoute =
+  AdminContractorsContractorIdRouteImport.update({
+    id: '/contractors/$contractorId',
+    path: '/contractors/$contractorId',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminWorkOrdersIndexRoute = AdminWorkOrdersIndexRouteImport.update({
+  id: '/work-orders/',
+  path: '/work-orders/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminWorkOrdersWorkOrderIdRoute =
+  AdminWorkOrdersWorkOrderIdRouteImport.update({
+    id: '/work-orders/$workOrderId',
+    path: '/work-orders/$workOrderId',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -83,24 +128,38 @@ export interface FileRoutesByFullPath {
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/alerts': typeof AdminAlertsRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
+  '/admin/satellite': typeof AdminSatelliteRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
+  '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
+  '/admin/contractors/$contractorId': typeof AdminContractorsContractorIdRoute
+  '/admin/work-orders/$workOrderId': typeof AdminWorkOrdersWorkOrderIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/complaints/': typeof AdminComplaintsIndexRoute
+  '/admin/contractors/': typeof AdminContractorsIndexRoute
+  '/admin/work-orders/': typeof AdminWorkOrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/alerts': typeof AdminAlertsRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
+  '/admin/satellite': typeof AdminSatelliteRoute
   '/admin': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
+  '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
+  '/admin/contractors/$contractorId': typeof AdminContractorsContractorIdRoute
+  '/admin/work-orders/$workOrderId': typeof AdminWorkOrdersWorkOrderIdRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
   '/admin/complaints': typeof AdminComplaintsIndexRoute
+  '/admin/contractors': typeof AdminContractorsIndexRoute
+  '/admin/work-orders': typeof AdminWorkOrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -109,12 +168,19 @@ export interface FileRoutesById {
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/alerts': typeof AdminAlertsRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
+  '/admin/satellite': typeof AdminSatelliteRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
+  '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
+  '/admin/contractors/$contractorId': typeof AdminContractorsContractorIdRoute
+  '/admin/work-orders/$workOrderId': typeof AdminWorkOrdersWorkOrderIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/complaints/': typeof AdminComplaintsIndexRoute
+  '/admin/contractors/': typeof AdminContractorsIndexRoute
+  '/admin/work-orders/': typeof AdminWorkOrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -124,24 +190,38 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/admin/alerts'
+    | '/admin/analytics'
     | '/admin/dashboard'
     | '/admin/map'
+    | '/admin/satellite'
     | '/admin/'
     | '/admin/assets/$assetId'
+    | '/admin/complaints/$complaintId'
+    | '/admin/contractors/$contractorId'
+    | '/admin/work-orders/$workOrderId'
     | '/admin/assets/'
     | '/admin/complaints/'
+    | '/admin/contractors/'
+    | '/admin/work-orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/landing'
     | '/login'
     | '/admin/alerts'
+    | '/admin/analytics'
     | '/admin/dashboard'
     | '/admin/map'
+    | '/admin/satellite'
     | '/admin'
     | '/admin/assets/$assetId'
+    | '/admin/complaints/$complaintId'
+    | '/admin/contractors/$contractorId'
+    | '/admin/work-orders/$workOrderId'
     | '/admin/assets'
     | '/admin/complaints'
+    | '/admin/contractors'
+    | '/admin/work-orders'
   id:
     | '__root__'
     | '/'
@@ -149,12 +229,19 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/admin/alerts'
+    | '/admin/analytics'
     | '/admin/dashboard'
     | '/admin/map'
+    | '/admin/satellite'
     | '/admin/'
     | '/admin/assets/$assetId'
+    | '/admin/complaints/$complaintId'
+    | '/admin/contractors/$contractorId'
+    | '/admin/work-orders/$workOrderId'
     | '/admin/assets/'
     | '/admin/complaints/'
+    | '/admin/contractors/'
+    | '/admin/work-orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -208,6 +295,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAlertsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/analytics': {
+      id: '/admin/analytics'
+      path: '/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/dashboard': {
       id: '/admin/dashboard'
       path: '/dashboard'
@@ -220,6 +314,13 @@ declare module '@tanstack/react-router' {
       path: '/map'
       fullPath: '/admin/map'
       preLoaderRoute: typeof AdminMapRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/satellite': {
+      id: '/admin/satellite'
+      path: '/satellite'
+      fullPath: '/admin/satellite'
+      preLoaderRoute: typeof AdminSatelliteRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/assets/': {
@@ -243,27 +344,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminComplaintsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/complaints/$complaintId': {
+      id: '/admin/complaints/$complaintId'
+      path: '/complaints/$complaintId'
+      fullPath: '/admin/complaints/$complaintId'
+      preLoaderRoute: typeof AdminComplaintsComplaintIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/contractors/': {
+      id: '/admin/contractors/'
+      path: '/contractors'
+      fullPath: '/admin/contractors/'
+      preLoaderRoute: typeof AdminContractorsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/contractors/$contractorId': {
+      id: '/admin/contractors/$contractorId'
+      path: '/contractors/$contractorId'
+      fullPath: '/admin/contractors/$contractorId'
+      preLoaderRoute: typeof AdminContractorsContractorIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/work-orders/': {
+      id: '/admin/work-orders/'
+      path: '/work-orders'
+      fullPath: '/admin/work-orders/'
+      preLoaderRoute: typeof AdminWorkOrdersIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/work-orders/$workOrderId': {
+      id: '/admin/work-orders/$workOrderId'
+      path: '/work-orders/$workOrderId'
+      fullPath: '/admin/work-orders/$workOrderId'
+      preLoaderRoute: typeof AdminWorkOrdersWorkOrderIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
   AdminAlertsRoute: typeof AdminAlertsRoute
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminMapRoute: typeof AdminMapRoute
+  AdminSatelliteRoute: typeof AdminSatelliteRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAssetsAssetIdRoute: typeof AdminAssetsAssetIdRoute
+  AdminComplaintsComplaintIdRoute: typeof AdminComplaintsComplaintIdRoute
+  AdminContractorsContractorIdRoute: typeof AdminContractorsContractorIdRoute
+  AdminWorkOrdersWorkOrderIdRoute: typeof AdminWorkOrdersWorkOrderIdRoute
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
   AdminComplaintsIndexRoute: typeof AdminComplaintsIndexRoute
+  AdminContractorsIndexRoute: typeof AdminContractorsIndexRoute
+  AdminWorkOrdersIndexRoute: typeof AdminWorkOrdersIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAlertsRoute: AdminAlertsRoute,
+  AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminMapRoute: AdminMapRoute,
+  AdminSatelliteRoute: AdminSatelliteRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminAssetsAssetIdRoute: AdminAssetsAssetIdRoute,
+  AdminComplaintsComplaintIdRoute: AdminComplaintsComplaintIdRoute,
+  AdminContractorsContractorIdRoute: AdminContractorsContractorIdRoute,
+  AdminWorkOrdersWorkOrderIdRoute: AdminWorkOrdersWorkOrderIdRoute,
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
   AdminComplaintsIndexRoute: AdminComplaintsIndexRoute,
+  AdminContractorsIndexRoute: AdminContractorsIndexRoute,
+  AdminWorkOrdersIndexRoute: AdminWorkOrdersIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
