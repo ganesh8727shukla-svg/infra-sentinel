@@ -22,6 +22,7 @@ import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminMapRouteImport } from './routes/admin.map'
 import { Route as AdminSatelliteRouteImport } from './routes/admin.satellite'
 import { Route as CitizenIndexRouteImport } from './routes/citizen.index'
+import { Route as CitizenReportRouteImport } from './routes/citizen.report'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
 import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$assetId'
 import { Route as AdminComplaintsIndexRouteImport } from './routes/admin.complaints.index'
@@ -96,6 +97,11 @@ const CitizenIndexRoute = CitizenIndexRouteImport.update({
   path: '/',
   getParentRoute: () => CitizenRoute,
 } as any)
+const CitizenReportRoute = CitizenReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => CitizenRoute,
+} as any)
 const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
   id: '/assets/',
   path: '/assets/',
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
   '/citizen/': typeof CitizenIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/citizen/report': typeof CitizenReportRoute
   '/admin': typeof AdminIndexRoute
   '/citizen': typeof CitizenIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
   '/citizen/': typeof CitizenIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
@@ -222,6 +231,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/map'
     | '/admin/satellite'
+    | '/citizen/report'
     | '/admin/'
     | '/citizen/'
     | '/admin/assets/$assetId'
@@ -243,6 +253,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/map'
     | '/admin/satellite'
+    | '/citizen/report'
     | '/admin'
     | '/citizen'
     | '/admin/assets/$assetId'
@@ -266,6 +277,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/map'
     | '/admin/satellite'
+    | '/citizen/report'
     | '/admin/'
     | '/citizen/'
     | '/admin/assets/$assetId'
@@ -379,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CitizenIndexRouteImport
       parentRoute: typeof CitizenRoute
     }
+    '/citizen/report': {
+      id: '/citizen/report'
+      path: '/report'
+      fullPath: '/citizen/report'
+      preLoaderRoute: typeof CitizenReportRouteImport
+      parentRoute: typeof CitizenRoute
+    }
     '/admin/assets/': {
       id: '/admin/assets/'
       path: '/assets'
@@ -477,10 +496,12 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface CitizenRouteChildren {
+  CitizenReportRoute: typeof CitizenReportRoute
   CitizenIndexRoute: typeof CitizenIndexRoute
 }
 
 const CitizenRouteChildren: CitizenRouteChildren = {
+  CitizenReportRoute: CitizenReportRoute,
   CitizenIndexRoute: CitizenIndexRoute,
 }
 
