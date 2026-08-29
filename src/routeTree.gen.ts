@@ -19,8 +19,10 @@ import { Route as AdminAlertsRouteImport } from './routes/admin.alerts'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminHelpRouteImport } from './routes/admin.help'
 import { Route as AdminMapRouteImport } from './routes/admin.map'
 import { Route as AdminSatelliteRouteImport } from './routes/admin.satellite'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as CitizenIndexRouteImport } from './routes/citizen.index'
 import { Route as CitizenReportRouteImport } from './routes/citizen.report'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
@@ -82,6 +84,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminHelpRoute = AdminHelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminMapRoute = AdminMapRouteImport.update({
   id: '/map',
   path: '/map',
@@ -90,6 +97,11 @@ const AdminMapRoute = AdminMapRouteImport.update({
 const AdminSatelliteRoute = AdminSatelliteRouteImport.update({
   id: '/satellite',
   path: '/satellite',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
 const CitizenIndexRoute = CitizenIndexRouteImport.update({
@@ -156,8 +168,10 @@ export interface FileRoutesByFullPath {
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/help': typeof AdminHelpRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
   '/citizen/': typeof CitizenIndexRoute
@@ -178,8 +192,10 @@ export interface FileRoutesByTo {
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/help': typeof AdminHelpRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/citizen/report': typeof CitizenReportRoute
   '/admin': typeof AdminIndexRoute
   '/citizen': typeof CitizenIndexRoute
@@ -203,8 +219,10 @@ export interface FileRoutesById {
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/help': typeof AdminHelpRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
   '/citizen/': typeof CitizenIndexRoute
@@ -229,8 +247,10 @@ export interface FileRouteTypes {
     | '/admin/analytics'
     | '/admin/audit'
     | '/admin/dashboard'
+    | '/admin/help'
     | '/admin/map'
     | '/admin/satellite'
+    | '/admin/settings'
     | '/citizen/report'
     | '/admin/'
     | '/citizen/'
@@ -251,8 +271,10 @@ export interface FileRouteTypes {
     | '/admin/analytics'
     | '/admin/audit'
     | '/admin/dashboard'
+    | '/admin/help'
     | '/admin/map'
     | '/admin/satellite'
+    | '/admin/settings'
     | '/citizen/report'
     | '/admin'
     | '/citizen'
@@ -275,8 +297,10 @@ export interface FileRouteTypes {
     | '/admin/analytics'
     | '/admin/audit'
     | '/admin/dashboard'
+    | '/admin/help'
     | '/admin/map'
     | '/admin/satellite'
+    | '/admin/settings'
     | '/citizen/report'
     | '/admin/'
     | '/citizen/'
@@ -370,6 +394,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/help': {
+      id: '/admin/help'
+      path: '/help'
+      fullPath: '/admin/help'
+      preLoaderRoute: typeof AdminHelpRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/map': {
       id: '/admin/map'
       path: '/map'
@@ -382,6 +413,13 @@ declare module '@tanstack/react-router' {
       path: '/satellite'
       fullPath: '/admin/satellite'
       preLoaderRoute: typeof AdminSatelliteRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/citizen/': {
@@ -462,8 +500,10 @@ interface AdminRouteChildren {
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminAuditRoute: typeof AdminAuditRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminHelpRoute: typeof AdminHelpRoute
   AdminMapRoute: typeof AdminMapRoute
   AdminSatelliteRoute: typeof AdminSatelliteRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAssetsAssetIdRoute: typeof AdminAssetsAssetIdRoute
   AdminComplaintsComplaintIdRoute: typeof AdminComplaintsComplaintIdRoute
@@ -480,8 +520,10 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminAuditRoute: AdminAuditRoute,
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminHelpRoute: AdminHelpRoute,
   AdminMapRoute: AdminMapRoute,
   AdminSatelliteRoute: AdminSatelliteRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminAssetsAssetIdRoute: AdminAssetsAssetIdRoute,
   AdminComplaintsComplaintIdRoute: AdminComplaintsComplaintIdRoute,
