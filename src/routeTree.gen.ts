@@ -11,14 +11,18 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as CitizenRouteImport } from './routes/citizen'
 import { Route as LandingRouteImport } from './routes/landing'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminAlertsRouteImport } from './routes/admin.alerts'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
+import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminMapRouteImport } from './routes/admin.map'
 import { Route as AdminSatelliteRouteImport } from './routes/admin.satellite'
+import { Route as CitizenIndexRouteImport } from './routes/citizen.index'
+import { Route as CitizenReportRouteImport } from './routes/citizen.report'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
 import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$assetId'
 import { Route as AdminComplaintsIndexRouteImport } from './routes/admin.complaints.index'
@@ -36,6 +40,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitizenRoute = CitizenRouteImport.update({
+  id: '/citizen',
+  path: '/citizen',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LandingRoute = LandingRouteImport.update({
@@ -63,6 +72,11 @@ const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAuditRoute = AdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -77,6 +91,16 @@ const AdminSatelliteRoute = AdminSatelliteRouteImport.update({
   id: '/satellite',
   path: '/satellite',
   getParentRoute: () => AdminRoute,
+} as any)
+const CitizenIndexRoute = CitizenIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CitizenRoute,
+} as any)
+const CitizenReportRoute = CitizenReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => CitizenRoute,
 } as any)
 const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
   id: '/assets/',
@@ -125,14 +149,18 @@ const AdminWorkOrdersWorkOrderIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/citizen': typeof CitizenRouteWithChildren
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/alerts': typeof AdminAlertsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
+  '/citizen/': typeof CitizenIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
   '/admin/contractors/$contractorId': typeof AdminContractorsContractorIdRoute
@@ -148,10 +176,13 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/admin/alerts': typeof AdminAlertsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/citizen/report': typeof CitizenReportRoute
   '/admin': typeof AdminIndexRoute
+  '/citizen': typeof CitizenIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
   '/admin/contractors/$contractorId': typeof AdminContractorsContractorIdRoute
@@ -165,14 +196,18 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/citizen': typeof CitizenRouteWithChildren
   '/landing': typeof LandingRoute
   '/login': typeof LoginRoute
   '/admin/alerts': typeof AdminAlertsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
+  '/citizen/': typeof CitizenIndexRoute
   '/admin/assets/$assetId': typeof AdminAssetsAssetIdRoute
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
   '/admin/contractors/$contractorId': typeof AdminContractorsContractorIdRoute
@@ -187,14 +222,18 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/citizen'
     | '/landing'
     | '/login'
     | '/admin/alerts'
     | '/admin/analytics'
+    | '/admin/audit'
     | '/admin/dashboard'
     | '/admin/map'
     | '/admin/satellite'
+    | '/citizen/report'
     | '/admin/'
+    | '/citizen/'
     | '/admin/assets/$assetId'
     | '/admin/complaints/$complaintId'
     | '/admin/contractors/$contractorId'
@@ -210,10 +249,13 @@ export interface FileRouteTypes {
     | '/login'
     | '/admin/alerts'
     | '/admin/analytics'
+    | '/admin/audit'
     | '/admin/dashboard'
     | '/admin/map'
     | '/admin/satellite'
+    | '/citizen/report'
     | '/admin'
+    | '/citizen'
     | '/admin/assets/$assetId'
     | '/admin/complaints/$complaintId'
     | '/admin/contractors/$contractorId'
@@ -226,14 +268,18 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/citizen'
     | '/landing'
     | '/login'
     | '/admin/alerts'
     | '/admin/analytics'
+    | '/admin/audit'
     | '/admin/dashboard'
     | '/admin/map'
     | '/admin/satellite'
+    | '/citizen/report'
     | '/admin/'
+    | '/citizen/'
     | '/admin/assets/$assetId'
     | '/admin/complaints/$complaintId'
     | '/admin/contractors/$contractorId'
@@ -247,6 +293,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  CitizenRoute: typeof CitizenRouteWithChildren
   LandingRoute: typeof LandingRoute
   LoginRoute: typeof LoginRoute
 }
@@ -265,6 +312,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/citizen': {
+      id: '/citizen'
+      path: '/citizen'
+      fullPath: '/citizen'
+      preLoaderRoute: typeof CitizenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/landing': {
@@ -302,6 +356,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAnalyticsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/audit': {
+      id: '/admin/audit'
+      path: '/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AdminAuditRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/dashboard': {
       id: '/admin/dashboard'
       path: '/dashboard'
@@ -322,6 +383,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/satellite'
       preLoaderRoute: typeof AdminSatelliteRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/citizen/': {
+      id: '/citizen/'
+      path: '/'
+      fullPath: '/citizen/'
+      preLoaderRoute: typeof CitizenIndexRouteImport
+      parentRoute: typeof CitizenRoute
+    }
+    '/citizen/report': {
+      id: '/citizen/report'
+      path: '/report'
+      fullPath: '/citizen/report'
+      preLoaderRoute: typeof CitizenReportRouteImport
+      parentRoute: typeof CitizenRoute
     }
     '/admin/assets/': {
       id: '/admin/assets/'
@@ -385,6 +460,7 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminAlertsRoute: typeof AdminAlertsRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminAuditRoute: typeof AdminAuditRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminMapRoute: typeof AdminMapRoute
   AdminSatelliteRoute: typeof AdminSatelliteRoute
@@ -402,6 +478,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAlertsRoute: AdminAlertsRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
+  AdminAuditRoute: AdminAuditRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminMapRoute: AdminMapRoute,
   AdminSatelliteRoute: AdminSatelliteRoute,
@@ -418,9 +495,23 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface CitizenRouteChildren {
+  CitizenReportRoute: typeof CitizenReportRoute
+  CitizenIndexRoute: typeof CitizenIndexRoute
+}
+
+const CitizenRouteChildren: CitizenRouteChildren = {
+  CitizenReportRoute: CitizenReportRoute,
+  CitizenIndexRoute: CitizenIndexRoute,
+}
+
+const CitizenRouteWithChildren =
+  CitizenRoute._addFileChildren(CitizenRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  CitizenRoute: CitizenRouteWithChildren,
   LandingRoute: LandingRoute,
   LoginRoute: LoginRoute,
 }
