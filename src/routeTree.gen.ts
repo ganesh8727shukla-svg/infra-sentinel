@@ -24,6 +24,7 @@ import { Route as AdminMapRouteImport } from './routes/admin.map'
 import { Route as AdminSatelliteRouteImport } from './routes/admin.satellite'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as CitizenIndexRouteImport } from './routes/citizen.index'
+import { Route as CitizenProfileRouteImport } from './routes/citizen.profile'
 import { Route as CitizenReportRouteImport } from './routes/citizen.report'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
 import { Route as AdminAssetsAssetIdRouteImport } from './routes/admin.assets.$assetId'
@@ -33,6 +34,7 @@ import { Route as AdminContractorsIndexRouteImport } from './routes/admin.contra
 import { Route as AdminContractorsContractorIdRouteImport } from './routes/admin.contractors.$contractorId'
 import { Route as AdminWorkOrdersIndexRouteImport } from './routes/admin.work-orders.index'
 import { Route as AdminWorkOrdersWorkOrderIdRouteImport } from './routes/admin.work-orders.$workOrderId'
+import { Route as CitizenComplaintsComplaintIdRouteImport } from './routes/citizen.complaints.$complaintId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -109,6 +111,11 @@ const CitizenIndexRoute = CitizenIndexRouteImport.update({
   path: '/',
   getParentRoute: () => CitizenRoute,
 } as any)
+const CitizenProfileRoute = CitizenProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => CitizenRoute,
+} as any)
 const CitizenReportRoute = CitizenReportRouteImport.update({
   id: '/report',
   path: '/report',
@@ -157,6 +164,12 @@ const AdminWorkOrdersWorkOrderIdRoute =
     path: '/work-orders/$workOrderId',
     getParentRoute: () => AdminRoute,
   } as any)
+const CitizenComplaintsComplaintIdRoute =
+  CitizenComplaintsComplaintIdRouteImport.update({
+    id: '/complaints/$complaintId',
+    path: '/complaints/$complaintId',
+    getParentRoute: () => CitizenRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -172,6 +185,7 @@ export interface FileRoutesByFullPath {
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/citizen/profile': typeof CitizenProfileRoute
   '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
   '/citizen/': typeof CitizenIndexRoute
@@ -179,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
   '/admin/contractors/$contractorId': typeof AdminContractorsContractorIdRoute
   '/admin/work-orders/$workOrderId': typeof AdminWorkOrdersWorkOrderIdRoute
+  '/citizen/complaints/$complaintId': typeof CitizenComplaintsComplaintIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/complaints/': typeof AdminComplaintsIndexRoute
   '/admin/contractors/': typeof AdminContractorsIndexRoute
@@ -196,6 +211,7 @@ export interface FileRoutesByTo {
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/citizen/profile': typeof CitizenProfileRoute
   '/citizen/report': typeof CitizenReportRoute
   '/admin': typeof AdminIndexRoute
   '/citizen': typeof CitizenIndexRoute
@@ -203,6 +219,7 @@ export interface FileRoutesByTo {
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
   '/admin/contractors/$contractorId': typeof AdminContractorsContractorIdRoute
   '/admin/work-orders/$workOrderId': typeof AdminWorkOrdersWorkOrderIdRoute
+  '/citizen/complaints/$complaintId': typeof CitizenComplaintsComplaintIdRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
   '/admin/complaints': typeof AdminComplaintsIndexRoute
   '/admin/contractors': typeof AdminContractorsIndexRoute
@@ -223,6 +240,7 @@ export interface FileRoutesById {
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/citizen/profile': typeof CitizenProfileRoute
   '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
   '/citizen/': typeof CitizenIndexRoute
@@ -230,6 +248,7 @@ export interface FileRoutesById {
   '/admin/complaints/$complaintId': typeof AdminComplaintsComplaintIdRoute
   '/admin/contractors/$contractorId': typeof AdminContractorsContractorIdRoute
   '/admin/work-orders/$workOrderId': typeof AdminWorkOrdersWorkOrderIdRoute
+  '/citizen/complaints/$complaintId': typeof CitizenComplaintsComplaintIdRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/complaints/': typeof AdminComplaintsIndexRoute
   '/admin/contractors/': typeof AdminContractorsIndexRoute
@@ -251,6 +270,7 @@ export interface FileRouteTypes {
     | '/admin/map'
     | '/admin/satellite'
     | '/admin/settings'
+    | '/citizen/profile'
     | '/citizen/report'
     | '/admin/'
     | '/citizen/'
@@ -258,6 +278,7 @@ export interface FileRouteTypes {
     | '/admin/complaints/$complaintId'
     | '/admin/contractors/$contractorId'
     | '/admin/work-orders/$workOrderId'
+    | '/citizen/complaints/$complaintId'
     | '/admin/assets/'
     | '/admin/complaints/'
     | '/admin/contractors/'
@@ -275,6 +296,7 @@ export interface FileRouteTypes {
     | '/admin/map'
     | '/admin/satellite'
     | '/admin/settings'
+    | '/citizen/profile'
     | '/citizen/report'
     | '/admin'
     | '/citizen'
@@ -282,6 +304,7 @@ export interface FileRouteTypes {
     | '/admin/complaints/$complaintId'
     | '/admin/contractors/$contractorId'
     | '/admin/work-orders/$workOrderId'
+    | '/citizen/complaints/$complaintId'
     | '/admin/assets'
     | '/admin/complaints'
     | '/admin/contractors'
@@ -301,6 +324,7 @@ export interface FileRouteTypes {
     | '/admin/map'
     | '/admin/satellite'
     | '/admin/settings'
+    | '/citizen/profile'
     | '/citizen/report'
     | '/admin/'
     | '/citizen/'
@@ -308,6 +332,7 @@ export interface FileRouteTypes {
     | '/admin/complaints/$complaintId'
     | '/admin/contractors/$contractorId'
     | '/admin/work-orders/$workOrderId'
+    | '/citizen/complaints/$complaintId'
     | '/admin/assets/'
     | '/admin/complaints/'
     | '/admin/contractors/'
@@ -429,6 +454,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CitizenIndexRouteImport
       parentRoute: typeof CitizenRoute
     }
+    '/citizen/profile': {
+      id: '/citizen/profile'
+      path: '/profile'
+      fullPath: '/citizen/profile'
+      preLoaderRoute: typeof CitizenProfileRouteImport
+      parentRoute: typeof CitizenRoute
+    }
     '/citizen/report': {
       id: '/citizen/report'
       path: '/report'
@@ -492,6 +524,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminWorkOrdersWorkOrderIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/citizen/complaints/$complaintId': {
+      id: '/citizen/complaints/$complaintId'
+      path: '/complaints/$complaintId'
+      fullPath: '/citizen/complaints/$complaintId'
+      preLoaderRoute: typeof CitizenComplaintsComplaintIdRouteImport
+      parentRoute: typeof CitizenRoute
+    }
   }
 }
 
@@ -538,13 +577,17 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface CitizenRouteChildren {
+  CitizenProfileRoute: typeof CitizenProfileRoute
   CitizenReportRoute: typeof CitizenReportRoute
   CitizenIndexRoute: typeof CitizenIndexRoute
+  CitizenComplaintsComplaintIdRoute: typeof CitizenComplaintsComplaintIdRoute
 }
 
 const CitizenRouteChildren: CitizenRouteChildren = {
+  CitizenProfileRoute: CitizenProfileRoute,
   CitizenReportRoute: CitizenReportRoute,
   CitizenIndexRoute: CitizenIndexRoute,
+  CitizenComplaintsComplaintIdRoute: CitizenComplaintsComplaintIdRoute,
 }
 
 const CitizenRouteWithChildren =
