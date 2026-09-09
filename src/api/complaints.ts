@@ -46,9 +46,8 @@ export async function uploadImage(file: File): Promise<{
 
   const formData = new FormData();
   formData.append("file", file);
-
   const response = await fetch(
-    "http://127.0.0.1:8001/api/uploads",
+    "https://infrasetu-backend.onrender.com/api/uploads",
     {
       method: "POST",
       headers: token
