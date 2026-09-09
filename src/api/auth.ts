@@ -10,7 +10,14 @@ const MOCK_USERS: Record<UserRole, AppUser> = {
     role: "admin",
     organisation: "Public Works Department",
   },
-  citizen: { id: "USR-0001", name: "Citizen User", role: "citizen", organisation: "Maharashtra" },
+
+  citizen: {
+    id: "USR-0001",
+    name: "Citizen User",
+    role: "citizen",
+    organisation: "Maharashtra",
+  },
+
   contractor: {
     id: "CON-01",
     name: "Apex Infrastructure",
@@ -26,30 +33,81 @@ export async function login(payload: {
 }): Promise<AppUser> {
   if (isMock()) {
     const user = MOCK_USERS[payload.role];
+
     setToken("mock-jwt-token");
-    if (typeof window !== "undefined")
-      window.localStorage.setItem(USER_KEY, JSON.stringify(user));
+
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(
+        USER_KEY,
+        JSON.stringify(user),
+      );
+    }
+
     return mockResponse(user, 600);
   }
-  const res = await request<{ access_token: string; user: AppUser }>("/auth/login", {
+
+  const res = await request<{
+    access_token: string;
+    user: AppUser;
+  }>("/auth/login", {
     method: "POST",
     json: payload,
   });
+
   setToken(res.access_token);
+
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(
+      USER_KEY,
+      JSON.stringify(res.user),
+    );
+  }
+
   return res.user;
 }
 
 export async function me(): Promise<AppUser | null> {
   if (isMock()) {
-    if (typeof window === "undefined") return null;
+    if (typeof window === "undefined") {
+      return null;
+    }
+
     const raw = window.localStorage.getItem(USER_KEY);
-    return raw ? (JSON.parse(raw) as AppUser) : null;
+
+    return raw
+      ? (JSON.parse(raw) as AppUser)
+      : null;
   }
-  return request<AppUser>("/auth/me");
+
+  try {
+    return await request<AppUser>("/auth/me");
+  } catch {
+    // Token is invalid/expired.
+    setToken(null);
+
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(USER_KEY);
+    }
+
+    return null;
+  }
 }
 
 export async function logout(): Promise<void> {
-  setToken(null);
-  if (typeof window !== "undefined") window.localStorage.removeItem(USER_KEY);
-  if (!isMock()) await request<void>("/auth/logout", { method: "POST" });
+  try {
+    if (!isMock()) {
+      try {
+        await request<void>("/auth/logout", {
+          method: "POST",
+        });
+      } catch {
+      }
+    }
+  } finally {
+    setToken(null);
+
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(USER_KEY);
+    }
+  }
 }

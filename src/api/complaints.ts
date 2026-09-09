@@ -13,6 +13,7 @@ export async function getComplaint(id: string): Promise<Complaint> {
     if (!c) throw new Error("Complaint not found");
     return mockResponse(c);
   }
+
   return request<Complaint>(`/complaints/${id}`);
 }
 
@@ -25,7 +26,45 @@ export async function submitComplaint(payload: {
   imageUrl?: string | undefined;
 }): Promise<Complaint> {
   if (isMock()) return mockResponse(createComplaint(payload), 700);
-  return request<Complaint>("/complaints", { method: "POST", json: payload });
+
+  return request<Complaint>("/complaints", {
+    method: "POST",
+    json: payload,
+  });
+}
+
+/**
+ * Upload an image to the backend.
+ */
+export async function uploadImage(file: File): Promise<{
+  id: string;
+  url: string;
+  mime: string;
+  size: number;
+}> {
+  const token = localStorage.getItem("infrasetu.token");
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(
+    "http://127.0.0.1:8001/api/uploads",
+    {
+      method: "POST",
+      headers: token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : {},
+      body: formData,
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Image upload failed.");
+  }
+
+  return response.json();
 }
 
 /** Mock-mode helper that advances the automated pipeline for a report. */
@@ -34,5 +73,6 @@ export async function runPipeline(complaintId: string) {
     runAutomatedPipeline(complaintId);
     return mockResponse(true, 200);
   }
+
   return true;
 }

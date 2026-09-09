@@ -30,6 +30,8 @@ export interface Asset {
 
 export type ComplaintStatus =
   | "Reported"
+  | "Under Assessment"
+  | "AI Analysing"
   | "AI Analysed"
   | "Risk Assigned"
   | "Work Order Created"
