@@ -66,6 +66,50 @@ export async function login(payload: {
   return res.user;
 }
 
+export async function register(payload: {
+  name: string;
+  password: string;
+}): Promise<AppUser> {
+  if (isMock()) {
+    const user: AppUser = {
+      id: `USR-${Math.random().toString(16).slice(2, 10).toUpperCase()}`,
+      name: payload.name.trim(),
+      role: "citizen",
+      organisation: "Citizen",
+    };
+
+    setToken("mock-jwt-token");
+
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(
+        USER_KEY,
+        JSON.stringify(user),
+      );
+    }
+
+    return mockResponse(user, 600);
+  }
+
+  const res = await request<{
+    access_token: string;
+    user: AppUser;
+  }>("/auth/register", {
+    method: "POST",
+    json: payload,
+  });
+
+  setToken(res.access_token);
+
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(
+      USER_KEY,
+      JSON.stringify(res.user),
+    );
+  }
+
+  return res.user;
+}
+
 export async function me(): Promise<AppUser | null> {
   if (isMock()) {
     if (typeof window === "undefined") {
@@ -101,6 +145,7 @@ export async function logout(): Promise<void> {
           method: "POST",
         });
       } catch {
+        // Logout should still clear the local session.
       }
     }
   } finally {

@@ -3,7 +3,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/ui/page-header";
 import { Section } from "@/components/ui/section";
 import { StatePill, StatusBadge } from "@/components/ui/status-badge";
-import { EmptyState, ErrorState, TableSkeleton } from "@/components/ui/states";
+import {
+  EmptyState,
+  ErrorState,
+  TableSkeleton,
+} from "@/components/ui/states";
 import {
   Table,
   TableBody,
@@ -25,7 +29,10 @@ import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/work-orders/")({
   head: () =>
-    seo("Work orders", "Automated and manual maintenance work orders with priority, contractor and verification state."),
+    seo(
+      "Work orders",
+      "Automated and manual maintenance work orders with priority, contractor and verification state.",
+    ),
   component: WorkOrdersPage,
 });
 
@@ -38,47 +45,84 @@ const STATUSES = [
   "Exception Review",
 ];
 
+const PRIORITIES = [
+  "Critical",
+  "High",
+  "Moderate",
+  "Normal",
+];
+
 function WorkOrdersPage() {
   const workOrders = useWorkOrders();
+
   const [status, setStatus] = useState("all");
   const [priority, setPriority] = useState("all");
 
-  const rows = (workOrders.data ?? []).filter(
-    (w) => (status === "all" || w.status === status) && (priority === "all" || w.priority === priority),
-  );
+  const rows = (workOrders.data ?? []).filter((workOrder) => {
+    const matchesStatus =
+      status === "all" || workOrder.status === status;
+
+    const matchesPriority =
+      priority === "all" || workOrder.priority === priority;
+
+    return matchesStatus && matchesPriority;
+  });
 
   return (
     <>
       <PageHeader
         title="Work orders"
         subtitle="Execution pipeline from assignment through AI-verified completion."
-        crumbs={[{ label: "Admin", to: "/admin/dashboard" }, { label: "Work Orders" }]}
+        crumbs={[
+          {
+            label: "Admin",
+            to: "/admin/dashboard",
+          },
+          {
+            label: "Work Orders",
+          },
+        ]}
       />
 
       <Section bodyClassName="space-y-4">
         <div className="flex flex-wrap gap-2">
           <Select value={status} onValueChange={setStatus}>
-            <SelectTrigger className="w-52" aria-label="Filter by status">
+            <SelectTrigger
+              className="w-52"
+              aria-label="Filter by status"
+            >
               <SelectValue placeholder="Status" />
             </SelectTrigger>
+
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
-              {STATUSES.map((s) => (
-                <SelectItem key={s} value={s}>
-                  {s}
+              <SelectItem value="all">
+                All statuses
+              </SelectItem>
+
+              {STATUSES.map((item) => (
+                <SelectItem key={item} value={item}>
+                  {item}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+
           <Select value={priority} onValueChange={setPriority}>
-            <SelectTrigger className="w-44" aria-label="Filter by priority">
+            <SelectTrigger
+              className="w-44"
+              aria-label="Filter by priority"
+            >
               <SelectValue placeholder="Priority" />
             </SelectTrigger>
+
             <SelectContent>
-              <SelectItem value="all">All priorities</SelectItem>
-              {["Critical", "High", "Normal"].map((p) => (
-                <SelectItem key={p} value={p}>
-                  {p}
+              <SelectItem value="all">
+                All priorities
+              </SelectItem>
+
+              {PRIORITIES.map((item) => (
+                <SelectItem key={item} value={item}>
+                  {item}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -86,11 +130,16 @@ function WorkOrdersPage() {
         </div>
 
         {workOrders.isError ? (
-          <ErrorState onRetry={() => void workOrders.refetch()} />
+          <ErrorState
+            onRetry={() => void workOrders.refetch()}
+          />
         ) : workOrders.isLoading ? (
           <TableSkeleton />
         ) : rows.length === 0 ? (
-          <EmptyState title="No work orders" description="No work orders match the selected filters." />
+          <EmptyState
+            title="No work orders"
+            description="No work orders match the selected filters."
+          />
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -106,40 +155,92 @@ function WorkOrdersPage() {
                   <TableHead>Deadline</TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
-                {rows.map((w) => (
-                  <TableRow key={w.id}>
+                {rows.map((workOrder) => (
+                  <TableRow key={workOrder.id}>
                     <TableCell>
                       <Link
                         to="/admin/work-orders/$workOrderId"
-                        params={{ workOrderId: w.id }}
+                        params={{
+                          workOrderId: workOrder.id,
+                        }}
                         className="font-medium text-foreground hover:text-primary hover:underline"
                       >
-                        {w.id}
+                        {workOrder.id}
                       </Link>
-                      <p className="text-xs text-muted-foreground">{w.issue}</p>
+
+                      <p className="text-xs text-muted-foreground">
+                        {workOrder.issue}
+                      </p>
                     </TableCell>
-                    <TableCell>{w.assetId}</TableCell>
+
                     <TableCell>
                       <Link
-                        to="/admin/contractors/$contractorId"
-                        params={{ contractorId: w.contractorId }}
+                        to="/admin/assets/$assetId"
+                        params={{
+                          assetId: workOrder.assetId,
+                        }}
                         className="hover:text-primary hover:underline"
                       >
-                        {w.contractorId}
+                        {workOrder.assetId}
                       </Link>
                     </TableCell>
+
                     <TableCell>
-                      <StatePill>{w.priority}</StatePill>
+                      {workOrder.contractorId ? (
+                        <Link
+                          to="/admin/contractors/$contractorId"
+                          params={{
+                            contractorId:
+                              workOrder.contractorId,
+                          }}
+                          className="hover:text-primary hover:underline"
+                        >
+                          {workOrder.contractorId}
+                        </Link>
+                      ) : (
+                        <span className="text-muted-foreground">
+                          Unassigned
+                        </span>
+                      )}
                     </TableCell>
+
                     <TableCell>
-                      <StatusBadge level={riskLevel(w.riskScore)} label={String(w.riskScore)} />
+                      <StatePill>
+                        {workOrder.priority}
+                      </StatePill>
                     </TableCell>
+
                     <TableCell>
-                      <StatePill>{w.status}</StatePill>
+                      <StatusBadge
+                        level={riskLevel(workOrder.riskScore)}
+                        label={String(workOrder.riskScore)}
+                      />
                     </TableCell>
-                    <TableCell className="text-muted-foreground">{w.verificationStatus}</TableCell>
-                    <TableCell className="text-muted-foreground">{formatDate(w.deadline)}</TableCell>
+
+                    <TableCell>
+                      <StatePill>
+                        {workOrder.status}
+                      </StatePill>
+                    </TableCell>
+
+                    <TableCell>
+                      <span className="text-sm text-muted-foreground">
+                        {workOrder.verificationStatus}
+                      </span>
+
+                      {workOrder.verificationConfidence != null && (
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {workOrder.verificationConfidence.toFixed(0)}%
+                          confidence
+                        </p>
+                      )}
+                    </TableCell>
+
+                    <TableCell className="text-muted-foreground">
+                      {formatDate(workOrder.deadline)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -1,6 +1,15 @@
-export type AssetType = "Road" | "Bridge" | "Flyover" | "Tunnel" | "Culvert";
+export type AssetType =
+  | "Road"
+  | "Bridge"
+  | "Flyover"
+  | "Tunnel"
+  | "Culvert";
 
-export type RiskLevel = "healthy" | "moderate" | "high" | "critical";
+export type RiskLevel =
+  | "healthy"
+  | "moderate"
+  | "high"
+  | "critical";
 
 export type AssetStatus =
   | "Operational"
@@ -50,7 +59,7 @@ export interface Complaint {
   id: string;
   assetId: string;
   citizenId: string;
-  imageUrl?: string | undefined;
+  imageUrl?: string;
   latitude: number;
   longitude: number;
   issueType: IssueType;
@@ -60,13 +69,13 @@ export interface Complaint {
   status: ComplaintStatus;
   submittedBy: string;
   createdAt: string;
-  workOrderId?: string | undefined;
+  workOrderId?: string;
 }
 
 export interface AiDetection {
   id: string;
   assetId: string;
-  imageUrl?: string | undefined;
+  imageUrl?: string;
   detectionType: string;
   confidence: number;
   severity: RiskLevel;
@@ -98,13 +107,25 @@ export type WorkOrderStatus =
   | "Completed"
   | "Exception Review";
 
-export type Priority = "Critical" | "High" | "Normal";
+export type Priority =
+  | "Critical"
+  | "High"
+  | "Moderate"
+  | "Normal";
+
+export type VerificationStatus =
+  | "Not started"
+  | "Analysing"
+  | "Verified"
+  | "Needs Review"
+  | "Failed"
+  | "Rejected";
 
 export interface WorkOrder {
   id: string;
   assetId: string;
-  complaintId?: string | undefined;
-  contractorId: string;
+  complaintId?: string;
+  contractorId?: string;
   issue: string;
   requiredAction: string;
   priority: Priority;
@@ -112,17 +133,20 @@ export interface WorkOrder {
   riskScore: number;
   createdAt: string;
   deadline: string;
-  beforeImage?: string | undefined;
-  afterImage?: string | undefined;
-  notes?: string | undefined;
-  verificationStatus: "Not started" | "Analysing" | "Verified" | "Rejected";
-  verificationConfidence?: number | undefined;
+  beforeImage?: string;
+  afterImage?: string;
+  notes?: string;
+  verificationStatus: VerificationStatus;
+  verificationConfidence?: number;
 }
 
 export interface Contractor {
   id: string;
   name: string;
-  licenseStatus: "ACTIVE" | "SUSPENDED" | "UNDER REVIEW";
+  licenseStatus:
+    | "ACTIVE"
+    | "SUSPENDED"
+    | "UNDER REVIEW";
   district: string;
   activeOrders: number;
   completedOrders: number;
@@ -136,17 +160,28 @@ export interface AuditLog {
   id: string;
   timestamp: string;
   assetId: string;
-  actorType: "AUTOMATED SYSTEM" | "SYSTEM" | "CITIZEN" | "CONTRACTOR" | "OFFICER";
+  actorType:
+    | "AUTOMATED SYSTEM"
+    | "SYSTEM"
+    | "CITIZEN"
+    | "CONTRACTOR"
+    | "OFFICER";
   actorId: string;
   eventType: string;
   description: string;
   systemDecision: string;
   metadata?: {
-    inputs?: { label: string; value: string }[] | undefined;
-    outputs?: { label: string; value: string }[] | undefined;
-    policy?: string | undefined;
-    action?: string | undefined;
-  } | undefined;
+    inputs?: {
+      label: string;
+      value: string;
+    }[];
+    outputs?: {
+      label: string;
+      value: string;
+    }[];
+    policy?: string;
+    action?: string;
+  };
 }
 
 export interface SatelliteObservation {
@@ -174,7 +209,7 @@ export interface Alert {
   recommendedAction: string;
   createdAt: string;
   resolved: boolean;
-  workOrderId?: string | undefined;
+  workOrderId?: string;
 }
 
 export interface MaintenanceEntry {
@@ -184,7 +219,10 @@ export interface MaintenanceEntry {
   detail: string;
 }
 
-export type UserRole = "admin" | "citizen" | "contractor";
+export type UserRole =
+  | "admin"
+  | "citizen"
+  | "contractor";
 
 export interface AppUser {
   id: string;

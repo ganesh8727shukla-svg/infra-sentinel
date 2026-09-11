@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Satellite, Wrench } from "lucide-react";
+
 import { PageHeader } from "@/components/ui/page-header";
 import { MetaItem, Section } from "@/components/ui/section";
 import { ScoreMeter } from "@/components/ui/score-meter";
@@ -7,7 +8,13 @@ import { StatePill, StatusBadge } from "@/components/ui/status-badge";
 import { EmptyState, ErrorState, TableSkeleton } from "@/components/ui/states";
 import { MapPanel } from "@/components/maps/MapPanel";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+
 import {
   useAsset,
   useDetections,
@@ -15,12 +22,14 @@ import {
   useRisk,
   useWorkOrders,
 } from "@/hooks/useInfraData";
+
 import {
   formatDate,
   formatDateTime,
   healthLevel,
   riskLevel,
 } from "@/utils/format";
+
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/assets/$assetId")({
@@ -34,6 +43,7 @@ export const Route = createFileRoute("/admin/assets/$assetId")({
 
 function AssetDetailPage() {
   const { assetId } = Route.useParams();
+
   const asset = useAsset(assetId);
   const risk = useRisk(assetId);
   const detections = useDetections(assetId);
@@ -51,6 +61,32 @@ function AssetDetailPage() {
   const a = asset.data;
   const relatedOrders = (workOrders.data ?? []).filter(
     (w) => w.assetId === a.id,
+  );
+
+  /*
+   * Keep the asset page classification aligned with the backend risk engine.
+   *
+   * Backend:
+   *   0-49.99   Moderate
+   *   50-69.99  High
+   *   70+       Critical
+   */
+  const currentRiskLevel = riskLevel(a.riskScore);
+
+  const aiEvidenceFactor = risk.data?.factors.find(
+    (factor) => factor.key === "aiEvidence",
+  );
+
+  const detectedDefectsFactor = risk.data?.factors.find(
+    (factor) => factor.key === "detectedDefects",
+  );
+
+  const complaintVolumeFactor = risk.data?.factors.find(
+    (factor) => factor.key === "complaintVolume",
+  );
+
+  const assetAgeFactor = risk.data?.factors.find(
+    (factor) => factor.key === "assetAge",
   );
 
   return (
@@ -97,14 +133,14 @@ function AssetDetailPage() {
 
             <ScoreMeter
               value={a.riskScore}
-              level={riskLevel(a.riskScore)}
+              level={currentRiskLevel}
               label="Risk score"
             />
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <StatePill>{a.status}</StatePill>
-            <StatusBadge level={riskLevel(a.riskScore)} />
+            <StatusBadge level={currentRiskLevel} />
           </div>
 
           <dl className="grid grid-cols-2 gap-4">
@@ -164,7 +200,7 @@ function AssetDetailPage() {
                         </div>
                       </div>
 
-                      <StatusBadge level={risk.data.level} />
+                      <StatusBadge level={currentRiskLevel} />
                     </div>
 
                     <div className="mt-5 h-2 overflow-hidden rounded-full bg-border">
@@ -246,79 +282,96 @@ function AssetDetailPage() {
                   </div>
 
                   <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                    {risk.data.factors.map((factor) => (
-                      <div
-                        key={factor.key}
-                        className="rounded-xl border border-border p-4"
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <p className="text-sm font-medium text-foreground">
-                            {factor.label}
+                    {risk.data.factors.map((factor) => {
+                      const isDefectFactor = factor.key === "detectedDefects";
+
+                      /*
+                       * The factor's score is the actual risk contribution.
+                       * The details.detections value is only the raw number
+                       * of computer-vision detections.
+                       */
+                      const contributionLabel = `${factor.score} / ${factor.maxScore}`;
+
+                      return (
+                        <div
+                          key={factor.key}
+                          className="rounded-xl border border-border p-4"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <p className="text-sm font-medium text-foreground">
+                              {factor.label}
+                            </p>
+
+                            <span className="text-xs font-semibold text-muted-foreground">
+                              +{factor.score}
+                            </span>
+                          </div>
+
+                          <p className="mt-2 text-lg font-semibold text-foreground">
+                            {contributionLabel}
                           </p>
 
-                          <span className="text-xs font-semibold text-muted-foreground">
-                            +{factor.score}
-                          </span>
-                        </div>
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            Risk contribution · maximum {factor.maxScore}{" "}
+                            points
+                          </p>
 
-                        <p className="mt-2 text-lg font-semibold text-foreground">
-                          {factor.value}
-                        </p>
-
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          Maximum contribution: {factor.maxScore}
-                        </p>
-
-                        {factor.key === "aiEvidence" && (
-                          <div className="mt-3 space-y-1 border-t border-border pt-3 text-xs text-muted-foreground">
-                            <p>
-                              Confidence:{" "}
-                              <span className="font-medium text-foreground">
-                                {factor.details["confidence"]}%
-                              </span>
-                            </p>
-
-                            <p>
-                              Severity:{" "}
-                              <span className="font-medium capitalize text-foreground">
-                                {factor.details["severity"]}
-                              </span>
-                            </p>
-
-                            {factor.details["sourceComplaintId"] && (
+                          {factor.key === "aiEvidence" && (
+                            <div className="mt-3 space-y-1 border-t border-border pt-3 text-xs text-muted-foreground">
                               <p>
-                                Source complaint:{" "}
+                                Highest confidence:{" "}
                                 <span className="font-medium text-foreground">
-                                  {factor.details["sourceComplaintId"]}
+                                  {factor.details["confidence"]}%
                                 </span>
                               </p>
-                            )}
-                          </div>
-                        )}
 
-                        {factor.key === "detectedDefects" && (
-                          <p className="mt-3 border-t border-border pt-3 text-xs text-muted-foreground">
-                            {factor.details["detections"]} computer-vision
-                            detections contributed to the score.
-                          </p>
-                        )}
+                              <p>
+                                Strongest severity:{" "}
+                                <span className="font-medium capitalize text-foreground">
+                                  {factor.details["severity"]}
+                                </span>
+                              </p>
 
-                        {factor.key === "complaintVolume" && (
-                          <p className="mt-3 border-t border-border pt-3 text-xs text-muted-foreground">
-                            {factor.details["complaints"]} citizen complaint
-                            {factor.details["complaints"] === 1 ? "" : "s"}{" "}
-                            associated with this asset.
-                          </p>
-                        )}
+                              {factor.details["sourceComplaintId"] && (
+                                <p>
+                                  Source complaint:{" "}
+                                  <span className="font-medium text-foreground">
+                                    {factor.details["sourceComplaintId"]}
+                                  </span>
+                                </p>
+                              )}
+                            </div>
+                          )}
 
-                        {factor.key === "assetAge" && (
-                          <p className="mt-3 border-t border-border pt-3 text-xs text-muted-foreground">
-                            Asset age contributes up to {factor.maxScore}{" "}
-                            points to lifecycle risk.
-                          </p>
-                        )}
-                      </div>
-                    ))}
+                          {isDefectFactor && (
+                            <p className="mt-3 border-t border-border pt-3 text-xs text-muted-foreground">
+                              {factor.details["detections"]} computer-vision{" "}
+                              detection
+                              {factor.details["detections"] === 1
+                                ? ""
+                                : "s"}{" "}
+                              contributed to this assessment. The displayed
+                              score is the capped risk contribution.
+                            </p>
+                          )}
+
+                          {factor.key === "complaintVolume" && (
+                            <p className="mt-3 border-t border-border pt-3 text-xs text-muted-foreground">
+                              {factor.details["complaints"]} citizen complaint
+                              {factor.details["complaints"] === 1 ? "" : "s"}{" "}
+                              associated with this asset.
+                            </p>
+                          )}
+
+                          {factor.key === "assetAge" && (
+                            <p className="mt-3 border-t border-border pt-3 text-xs text-muted-foreground">
+                              Asset age contributes up to {factor.maxScore}{" "}
+                              points to lifecycle risk.
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -330,7 +383,7 @@ function AssetDetailPage() {
                   <p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">
                     The asset is currently classified as{" "}
                     <span className="font-semibold capitalize text-foreground">
-                      {risk.data.level}
+                      {currentRiskLevel}
                     </span>{" "}
                     risk because the automated assessment combines
                     AI-detected infrastructure defects with their confidence
@@ -340,35 +393,23 @@ function AssetDetailPage() {
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     <StatePill>
-                      AI evidence{" "}
-                      {risk.data.factors.find(
-                        (f) => f.key === "aiEvidence",
-                      )?.score ?? 0}
-                      /50
+                      AI evidence {aiEvidenceFactor?.score ?? 0}/
+                      {aiEvidenceFactor?.maxScore ?? 50}
                     </StatePill>
 
                     <StatePill>
-                      Defects{" "}
-                      {risk.data.factors.find(
-                        (f) => f.key === "detectedDefects",
-                      )?.score ?? 0}
-                      /20
+                      Defects {detectedDefectsFactor?.score ?? 0}/
+                      {detectedDefectsFactor?.maxScore ?? 20}
                     </StatePill>
 
                     <StatePill>
-                      Complaints{" "}
-                      {risk.data.factors.find(
-                        (f) => f.key === "complaintVolume",
-                      )?.score ?? 0}
-                      /15
+                      Complaints {complaintVolumeFactor?.score ?? 0}/
+                      {complaintVolumeFactor?.maxScore ?? 15}
                     </StatePill>
 
                     <StatePill>
-                      Age{" "}
-                      {risk.data.factors.find(
-                        (f) => f.key === "assetAge",
-                      )?.score ?? 0}
-                      /15
+                      Age {assetAgeFactor?.score ?? 0}/
+                      {assetAgeFactor?.maxScore ?? 15}
                     </StatePill>
                   </div>
                 </div>
