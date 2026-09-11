@@ -73,11 +73,20 @@ export interface AiDetection {
   createdAt: string;
 }
 
+export interface RiskFactor {
+  key: string;
+  label: string;
+  value: string;
+  score: number;
+  maxScore: number;
+  details: Record<string, string | number | null>;
+}
+
 export interface RiskScore {
   assetId: string;
   score: number;
   level: RiskLevel;
-  factors: { label: string; value: string }[];
+  factors: RiskFactor[];
   calculatedAt: string;
 }
 
