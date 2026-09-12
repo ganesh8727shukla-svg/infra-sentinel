@@ -24,7 +24,9 @@ import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminHelpRouteImport } from './routes/admin.help'
 import { Route as AdminMapRouteImport } from './routes/admin.map'
 import { Route as AdminSatelliteRouteImport } from './routes/admin.satellite'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as CitizenIndexRouteImport } from './routes/citizen.index'
+import { Route as CitizenComplaintsRouteImport } from './routes/citizen.complaints'
 import { Route as CitizenProfileRouteImport } from './routes/citizen.profile'
 import { Route as CitizenReportRouteImport } from './routes/citizen.report'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin.assets.index'
@@ -113,9 +115,19 @@ const AdminSatelliteRoute = AdminSatelliteRouteImport.update({
   path: '/satellite',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const CitizenIndexRoute = CitizenIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => CitizenRoute,
+} as any)
+const CitizenComplaintsRoute = CitizenComplaintsRouteImport.update({
+  id: '/complaints',
+  path: '/complaints',
   getParentRoute: () => CitizenRoute,
 } as any)
 const CitizenProfileRoute = CitizenProfileRouteImport.update({
@@ -172,15 +184,15 @@ const AdminWorkOrdersWorkOrderIdRoute =
     getParentRoute: () => AdminRoute,
   } as any)
 const CitizenComplaintsIndexRoute = CitizenComplaintsIndexRouteImport.update({
-  id: '/complaints/',
-  path: '/complaints/',
-  getParentRoute: () => CitizenRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => CitizenComplaintsRoute,
 } as any)
 const CitizenComplaintsComplaintIdRoute =
   CitizenComplaintsComplaintIdRouteImport.update({
-    id: '/complaints/$complaintId',
-    path: '/complaints/$complaintId',
-    getParentRoute: () => CitizenRoute,
+    id: '/$complaintId',
+    path: '/$complaintId',
+    getParentRoute: () => CitizenComplaintsRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -198,6 +210,8 @@ export interface FileRoutesByFullPath {
   '/admin/help': typeof AdminHelpRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/citizen/complaints': typeof CitizenComplaintsRouteWithChildren
   '/citizen/profile': typeof CitizenProfileRoute
   '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
@@ -226,6 +240,7 @@ export interface FileRoutesByTo {
   '/admin/help': typeof AdminHelpRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/citizen/profile': typeof CitizenProfileRoute
   '/citizen/report': typeof CitizenReportRoute
   '/admin': typeof AdminIndexRoute
@@ -257,6 +272,8 @@ export interface FileRoutesById {
   '/admin/help': typeof AdminHelpRoute
   '/admin/map': typeof AdminMapRoute
   '/admin/satellite': typeof AdminSatelliteRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/citizen/complaints': typeof CitizenComplaintsRouteWithChildren
   '/citizen/profile': typeof CitizenProfileRoute
   '/citizen/report': typeof CitizenReportRoute
   '/admin/': typeof AdminIndexRoute
@@ -289,6 +306,8 @@ export interface FileRouteTypes {
     | '/admin/help'
     | '/admin/map'
     | '/admin/satellite'
+    | '/admin/settings'
+    | '/citizen/complaints'
     | '/citizen/profile'
     | '/citizen/report'
     | '/admin/'
@@ -317,6 +336,7 @@ export interface FileRouteTypes {
     | '/admin/help'
     | '/admin/map'
     | '/admin/satellite'
+    | '/admin/settings'
     | '/citizen/profile'
     | '/citizen/report'
     | '/admin'
@@ -347,6 +367,8 @@ export interface FileRouteTypes {
     | '/admin/help'
     | '/admin/map'
     | '/admin/satellite'
+    | '/admin/settings'
+    | '/citizen/complaints'
     | '/citizen/profile'
     | '/citizen/report'
     | '/admin/'
@@ -480,11 +502,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSatelliteRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/citizen/': {
       id: '/citizen/'
       path: '/'
       fullPath: '/citizen/'
       preLoaderRoute: typeof CitizenIndexRouteImport
+      parentRoute: typeof CitizenRoute
+    }
+    '/citizen/complaints': {
+      id: '/citizen/complaints'
+      path: '/complaints'
+      fullPath: '/citizen/complaints'
+      preLoaderRoute: typeof CitizenComplaintsRouteImport
       parentRoute: typeof CitizenRoute
     }
     '/citizen/profile': {
@@ -559,17 +595,17 @@ declare module '@tanstack/react-router' {
     }
     '/citizen/complaints/': {
       id: '/citizen/complaints/'
-      path: '/complaints'
+      path: '/'
       fullPath: '/citizen/complaints/'
       preLoaderRoute: typeof CitizenComplaintsIndexRouteImport
-      parentRoute: typeof CitizenRoute
+      parentRoute: typeof CitizenComplaintsRoute
     }
     '/citizen/complaints/$complaintId': {
       id: '/citizen/complaints/$complaintId'
-      path: '/complaints/$complaintId'
+      path: '/$complaintId'
       fullPath: '/citizen/complaints/$complaintId'
       preLoaderRoute: typeof CitizenComplaintsComplaintIdRouteImport
-      parentRoute: typeof CitizenRoute
+      parentRoute: typeof CitizenComplaintsRoute
     }
   }
 }
@@ -582,6 +618,7 @@ interface AdminRouteChildren {
   AdminHelpRoute: typeof AdminHelpRoute
   AdminMapRoute: typeof AdminMapRoute
   AdminSatelliteRoute: typeof AdminSatelliteRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAssetsAssetIdRoute: typeof AdminAssetsAssetIdRoute
   AdminComplaintsComplaintIdRoute: typeof AdminComplaintsComplaintIdRoute
@@ -601,6 +638,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminHelpRoute: AdminHelpRoute,
   AdminMapRoute: AdminMapRoute,
   AdminSatelliteRoute: AdminSatelliteRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminAssetsAssetIdRoute: AdminAssetsAssetIdRoute,
   AdminComplaintsComplaintIdRoute: AdminComplaintsComplaintIdRoute,
@@ -614,20 +652,31 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
-interface CitizenRouteChildren {
-  CitizenProfileRoute: typeof CitizenProfileRoute
-  CitizenReportRoute: typeof CitizenReportRoute
-  CitizenIndexRoute: typeof CitizenIndexRoute
+interface CitizenComplaintsRouteChildren {
   CitizenComplaintsComplaintIdRoute: typeof CitizenComplaintsComplaintIdRoute
   CitizenComplaintsIndexRoute: typeof CitizenComplaintsIndexRoute
 }
 
+const CitizenComplaintsRouteChildren: CitizenComplaintsRouteChildren = {
+  CitizenComplaintsComplaintIdRoute: CitizenComplaintsComplaintIdRoute,
+  CitizenComplaintsIndexRoute: CitizenComplaintsIndexRoute,
+}
+
+const CitizenComplaintsRouteWithChildren =
+  CitizenComplaintsRoute._addFileChildren(CitizenComplaintsRouteChildren)
+
+interface CitizenRouteChildren {
+  CitizenComplaintsRoute: typeof CitizenComplaintsRouteWithChildren
+  CitizenProfileRoute: typeof CitizenProfileRoute
+  CitizenReportRoute: typeof CitizenReportRoute
+  CitizenIndexRoute: typeof CitizenIndexRoute
+}
+
 const CitizenRouteChildren: CitizenRouteChildren = {
+  CitizenComplaintsRoute: CitizenComplaintsRouteWithChildren,
   CitizenProfileRoute: CitizenProfileRoute,
   CitizenReportRoute: CitizenReportRoute,
   CitizenIndexRoute: CitizenIndexRoute,
-  CitizenComplaintsComplaintIdRoute: CitizenComplaintsComplaintIdRoute,
-  CitizenComplaintsIndexRoute: CitizenComplaintsIndexRoute,
 }
 
 const CitizenRouteWithChildren =
